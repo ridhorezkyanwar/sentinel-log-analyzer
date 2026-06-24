@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🤖 Sentinel Log Analyzer
 
-## Getting Started
+> **AI-Powered Threat Intelligence & SOC Copilot**
+> 
+> [![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://sentinel-log-analyzer-phi.vercel.app/)
+> [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+> [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+> [![Groq](https://img.shields.io/badge/AI-Groq_Llama3-orange?style=flat-square)](https://groq.com/)
 
-First, run the development server:
+An intelligent security log analysis tool that acts as a **Tier-3 SOC (Security Operations Center) Analyst**. It ingests raw server logs, firewall logs, or access logs, and utilizes Large Language Models (LLM) to detect threats, extract Indicators of Compromise (IoCs), and generate executive threat intelligence reports in real-time.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+🌐 **Live:** [sentinel-log-analyzer-phi.vercel.app](https://sentinel-log-analyzer-phi.vercel.app/)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ✨ Key Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- 🧠 **AI-Driven Analysis:** Powered by **Llama 3.3 70B** via Groq API for ultra-fast inference (<500ms).
+- 🔍 **Threat Detection:** Automatically identifies patterns like Brute Force, SQL Injection, XSS, Path Traversal, and Port Scanning.
+- 📊 **IoC Extraction:** Intelligently extracts malicious IP addresses, suspicious user agents, and attack vectors.
+- 📝 **Executive Reporting:** Generates structured Markdown reports with Severity Assessment and Remediation Steps.
+- 🔒 **Secure Architecture:** API keys are managed via environment variables (never exposed to the client).
+- ⚡ **Edge Deployment:** Deployed on Vercel Edge Network for global low-latency access.
 
-## Learn More
+## 🛠️ Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+| Layer | Technology |
+| :--- | :--- |
+| **Framework** | Next.js 15 (App Router) |
+| **Language** | TypeScript |
+| **AI Engine** | Vercel AI SDK + Groq (Llama 3.3 70B) |
+| **Styling** | Tailwind CSS v4 |
+| **UI Components** | Lucide React + Motion (Framer Motion) |
+| **Deployment** | Vercel |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Getting Started
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Prerequisites
+- Node.js 18+ installed.
+- A Groq API Key (Get one for free at [console.groq.com](https://console.groq.com/)).
 
-## Deploy on Vercel
+### Installation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/ridhorezkyanwar/sentinel-log-analyzer.git
+   cd sentinel-log-analyzer
