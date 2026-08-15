@@ -43,7 +43,7 @@ Be concise but thorough. Use emojis for visual clarity.`;
 
     // Call Groq AI
     const { text } = await generateText({
-      model: groq("llama-3.3-70b-versatile"),
+      model: groq("qwen/qwen3.6-27b"),
       system: systemPrompt,
       prompt: `Analyze the following security log data and provide a comprehensive threat intelligence report:\n\n\`\`\`\n${logData}\n\`\`\``,
     });
