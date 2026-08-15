@@ -48,8 +48,10 @@ Be concise but thorough. Use emojis for visual clarity.`;
       prompt: `Analyze the following security log data and provide a comprehensive threat intelligence report:\n\n\`\`\`\n${logData}\n\`\`\``,
     });
 
+    const cleanText = text.replace(/<think>[\s\S]*?<\/think>/g, "").trim();
+
     return NextResponse.json({
-      analysis: text,
+      analysis: cleanText,
       analyzedAt: new Date().toISOString(),
     });
   } catch (error) {
