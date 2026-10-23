@@ -1,52 +1,81 @@
-# 🤖 Sentinel Log Analyzer
+# Sentinel Log Analyzer
 
-<p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=18&duration=2600&pause=850&color=58A6FF&center=true&vCenter=true&width=520&lines=Build+%E2%80%A2+Test+%E2%80%A2+Improve" alt="Animated banner: Build, Test, Improve" />
+> **AI-assisted security log triage and reporting**
+
+<p>
+  <a href="https://sentinel-log-analyzer-phi.vercel.app/"><img src="https://img.shields.io/badge/Live_Demo-Vercel-black?style=for-the-badge&logo=vercel" alt="Live demo" /></a>
+  <img src="https://img.shields.io/badge/Next.js-16-000000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js 16" />
+  <img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/LLM-Groq-orange?style=flat-square" alt="Groq LLM provider" />
 </p>
 
+Sentinel accepts user-supplied log text and asks a language model to produce a structured review with suspected attack patterns, candidate indicators of compromise (IoCs), a severity assessment, and suggested next steps.
 
-> **AI-Powered Threat Intelligence & SOC Copilot**
-> 
-> [![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://sentinel-log-analyzer-phi.vercel.app/)
-> [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)](https://nextjs.org/)
-> [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-> [![Groq](https://img.shields.io/badge/AI-Groq_Qwen3.6_27B-orange?style=flat-square)](https://groq.com/)
+**This is an educational triage aid, not an automated detection engine or a replacement for an analyst, SIEM, or incident-response process.** Model output can be incomplete or wrong and must be checked against the original logs.
 
-An intelligent security log analysis tool that acts as a **Tier-3 SOC (Security Operations Center) Analyst**. It ingests raw server logs, firewall logs, or access logs, and utilizes Large Language Models (LLM) to detect threats, extract Indicators of Compromise (IoCs), and generate executive threat intelligence reports in real-time.
+## Features
 
-🌐 **Live:** [sentinel-log-analyzer-phi.vercel.app](https://sentinel-log-analyzer-phi.vercel.app/)
+- Submit server, access, authentication, or firewall log excerpts as text.
+- Generate a Markdown report with an executive summary, suspected threats, candidate IoCs, severity, and suggested remediation.
+- Use the Groq API with the `qwen/qwen3.6-27b` model configured in the API route.
+- Keep the provider API key on the server rather than embedding it in browser code.
 
----
+## Stack
 
-## ✨ Key Features
+- Next.js 16 App Router and React 19
+- TypeScript
+- Vercel AI SDK with the Groq provider
+- Tailwind CSS 4
+- Motion and Lucide React
 
-- 🧠 **AI-Driven Analysis:** Powered by **Qwen3.6 27B** via Groq API for ultra-fast inference (<500ms).
-- 🔍 **Threat Detection:** Automatically identifies patterns like Brute Force, SQL Injection, XSS, Path Traversal, and Port Scanning.
-- 📊 **IoC Extraction:** Intelligently extracts malicious IP addresses, suspicious user agents, and attack vectors.
-- 📝 **Executive Reporting:** Generates structured Markdown reports with Severity Assessment and Remediation Steps.
-- 🔒 **Secure Architecture:** API keys are managed via environment variables (never exposed to the client).
-- ⚡ **Edge Deployment:** Deployed on Vercel Edge Network for global low-latency access.
+## Run locally
 
-## 🛠️ Tech Stack
+### Requirements
 
-| Layer | Technology |
-| :--- | :--- |
-| **Framework** | Next.js 15 (App Router) |
-| **Language** | TypeScript |
-| **AI Engine** | Vercel AI SDK + Groq (Qwen3.6 27B) |
-| **Styling** | Tailwind CSS v4 |
-| **UI Components** | Lucide React + Motion (Framer Motion) |
-| **Deployment** | Vercel |
+- Node.js 22 or newer
+- npm
+- A Groq API key from [Groq Console](https://console.groq.com/)
 
-## 🚀 Getting Started
+### Setup
 
-### Prerequisites
-- Node.js 18+ installed.
-- A Groq API Key (Get one for free at [console.groq.com](https://console.groq.com/)).
+```bash
+git clone https://github.com/ridhorezkyanwar/sentinel-log-analyzer.git
+cd sentinel-log-analyzer
+npm install
+```
 
-### Installation
+Create `.env.local` in the project root and add your key:
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/ridhorezkyanwar/sentinel-log-analyzer.git
-   cd sentinel-log-analyzer
+```dotenv
+GROQ_API_KEY=replace_with_your_key
+```
+
+Keep the key private. Do not commit `.env.local` and do not rename the variable to a `NEXT_PUBLIC_*` variable.
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+## Checks
+
+```bash
+npm run lint
+npm run build
+```
+
+These are the lint and production-build scripts currently defined in `package.json`. The project does not currently define an `npm test` script, so these commands should not be represented as a passing automated test suite.
+
+## Privacy and safe use
+
+- Logs may contain usernames, IP addresses, session identifiers, internal hostnames, or secrets. Remove or mask data that should not leave your environment before submitting it.
+- The server sends submitted log text to the configured Groq model provider for analysis. Review your provider's current data-handling terms before using sensitive or regulated logs.
+- Treat the output as a set of hypotheses. Confirm suspected indicators and remediation steps with trusted telemetry and source evidence.
+- Do not paste real incident data into the public demo unless you have permission to share it.
+
+## Limitations
+
+The current API route sends the supplied text to an LLM and returns its generated report. It does not, by itself, prove that an event occurred, guarantee that all attacks are detected, or replace deterministic correlation rules and threat-intelligence validation. Response time depends on input size, provider availability, and model latency; no fixed latency guarantee is claimed.
