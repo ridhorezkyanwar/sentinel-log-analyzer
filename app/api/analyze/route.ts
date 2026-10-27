@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { groq } from "@ai-sdk/groq";
 import { generateText } from "ai";
 import { LogAnalysisSchema, MAX_REQUEST_BYTES } from "@/app/lib/log-schema";
+import { readBoundedBody } from "@/app/lib/bounded-body";
 
 export async function POST(req: NextRequest) {
   const contentLength = req.headers.get("content-length");
@@ -15,9 +16,23 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  const boundedBody = await readBoundedBody(req, MAX_REQUEST_BYTES);
+  if (!boundedBody.ok) {
+    if (boundedBody.reason === "too-large") {
+      return NextResponse.json(
+        { error: "Ukuran request maksimal 64 KB." },
+        { status: 413 }
+      );
+    }
+    return NextResponse.json(
+      { error: "Body request tidak dapat dibaca sebagai UTF-8 yang valid." },
+      { status: 400 }
+    );
+  }
+
   let body: unknown;
   try {
-    body = await req.json();
+    body = JSON.parse(boundedBody.text);
   } catch {
     return NextResponse.json(
       { error: "Body request harus berupa JSON yang valid." },
