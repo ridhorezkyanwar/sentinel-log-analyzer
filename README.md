@@ -64,10 +64,12 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ```bash
 npm run lint
+npx tsc --noEmit
+npm test
 npm run build
 ```
 
-These are the lint and production-build scripts currently defined in `package.json`. The project does not currently define an `npm test` script, so these commands should not be represented as a passing automated test suite.
+GitHub Actions runs the same checks on pushes and pull requests to `main`. Unit tests cover the log request validation boundaries; they do not verify live Groq responses, provider availability, or the quality of generated threat reports.
 
 ## Privacy and safe use
 
