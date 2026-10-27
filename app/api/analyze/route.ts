@@ -24,8 +24,14 @@ export async function POST(req: NextRequest) {
         { status: 413 }
       );
     }
+    if (boundedBody.reason === "invalid-utf8") {
+      return NextResponse.json(
+        { error: "Body request harus menggunakan UTF-8 yang valid." },
+        { status: 400 }
+      );
+    }
     return NextResponse.json(
-      { error: "Body request tidak dapat dibaca sebagai UTF-8 yang valid." },
+      { error: "Body request tidak dapat dibaca." },
       { status: 400 }
     );
   }
