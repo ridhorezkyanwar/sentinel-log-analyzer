@@ -69,7 +69,7 @@ npm test
 npm run build
 ```
 
-GitHub Actions runs the same checks on pushes and pull requests to `main`. The API enforces a 64 KiB request-body limit while reading the stream, including requests without a trustworthy `Content-Length` header; regression tests cover that case and invalid UTF-8. Other tests cover the log schema boundaries. These checks do not verify live Groq responses, provider availability, or the quality of generated threat reports.
+GitHub Actions runs the same checks on pushes and pull requests to `main`. The API enforces a 64 KiB request-body limit while reading the stream, including requests without a trustworthy `Content-Length` header; it also limits each runtime instance to five analysis requests per client address per minute, caps model output at 1,200 tokens, and aborts model calls after 30 seconds. Regression tests cover bounded request bodies, invalid UTF-8, schema boundaries, and rate-limit behavior. The in-memory limiter is best-effort protection for a portfolio demo, not a durable distributed quota; production use should add provider-level or shared-store rate limiting. These checks do not verify live Groq responses, provider availability, or the quality of generated threat reports.
 
 ## Privacy and safe use
 
