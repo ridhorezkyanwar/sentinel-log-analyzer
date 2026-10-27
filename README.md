@@ -69,7 +69,7 @@ npm test
 npm run build
 ```
 
-GitHub Actions runs the same checks on pushes and pull requests to `main`. Unit tests cover the log request validation boundaries; they do not verify live Groq responses, provider availability, or the quality of generated threat reports.
+GitHub Actions runs the same checks on pushes and pull requests to `main`. The API enforces a 64 KiB request-body limit while reading the stream, including requests without a trustworthy `Content-Length` header; regression tests cover that case and invalid UTF-8. Other tests cover the log schema boundaries. These checks do not verify live Groq responses, provider availability, or the quality of generated threat reports.
 
 ## Privacy and safe use
 
