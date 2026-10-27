@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
+const MAX_LOG_CHARACTERS = 50_000;
+
 export default function LogAnalyzer() {
   const [logData, setLogData] = useState("");
   const [analysis, setAnalysis] = useState("");
@@ -98,7 +100,7 @@ export default function LogAnalyzer() {
             </span>
           </h1>
           <p className="text-slate-400 text-lg">
-            Analisis log keamanan dengan AI untuk deteksi ancaman real-time
+            Bantuan triase log keamanan berbasis AI untuk membantu investigasi awal
           </p>
         </motion.div>
 
@@ -128,8 +130,12 @@ export default function LogAnalyzer() {
               onChange={(e) => setLogData(e.target.value)}
               placeholder="Paste log data di sini... (web server logs, firewall logs, access logs, dll)"
               className="w-full h-96 bg-slate-900 border border-slate-700 rounded-xl p-4 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all font-mono text-sm resize-none"
+              maxLength={MAX_LOG_CHARACTERS}
               disabled={isLoading}
             />
+            <p className="text-xs text-slate-500 text-right" aria-live="polite">
+              {logData.length.toLocaleString()} / {MAX_LOG_CHARACTERS.toLocaleString()} characters
+            </p>
 
             <button
               onClick={analyzeLog}
