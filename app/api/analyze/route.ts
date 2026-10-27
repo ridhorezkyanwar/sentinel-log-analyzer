@@ -1,20 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { groq } from "@ai-sdk/groq";
 import { generateText } from "ai";
-import { z } from "zod";
-
-const MAX_LOG_CHARACTERS = 50_000;
-const MAX_REQUEST_BYTES = 64 * 1024;
-
-const LogAnalysisSchema = z
-  .object({
-    logData: z
-      .string()
-      .trim()
-      .min(10, "Log data terlalu pendek")
-      .max(MAX_LOG_CHARACTERS, `Log data maksimal ${MAX_LOG_CHARACTERS.toLocaleString("en-US")} karakter`),
-  })
-  .strict();
+import { LogAnalysisSchema, MAX_REQUEST_BYTES } from "@/app/lib/log-schema";
 
 export async function POST(req: NextRequest) {
   const contentLength = req.headers.get("content-length");
