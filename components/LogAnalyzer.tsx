@@ -46,7 +46,7 @@ export default function LogAnalyzer() {
       } else {
         setAnalysis(data.analysis);
       }
-    } catch (err) {
+    } catch {
       setError("Terjadi kesalahan. Coba lagi.");
     } finally {
       setIsLoading(false);
