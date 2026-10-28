@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   repair:
-    if: github.event.head_commit.message == 'ci: run one-time dependency repair'
+    if: "${{ github.event.head_commit.message == 'ci: run one-time dependency repair' }}"
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
