@@ -1,0 +1,64 @@
+name: One-time dependency repair
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/one-time-dep-repair.yml
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.event.head_commit.message == 'ci: run one-time dependency repair'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install current lockfile
+        run: npm ci
+
+      - name: Update Next.js and repair dependency advisories
+        run: |
+          npm install next@16.4.2 eslint-config-next@16.4.2 --save-exact
+          npm audit fix
+
+      - name: Remove unused catch variable
+        run: |
+          node <<'NODE'
+          const fs = require("node:fs");
+          const file = "components/LogAnalyzer.tsx";
+          const source = fs.readFileSync(file, "utf8");
+          const before = '    } catch (err) {\n      setError("Terjadi kesalahan. Coba lagi.");';
+          const after = '    } catch {\n      setError("Terjadi kesalahan. Coba lagi.");';
+          if (!source.includes(before)) throw new Error("Expected catch block not found; refusing to edit");
+          fs.writeFileSync(file, source.replace(before, after));
+          NODE
+
+      - name: Lint, type-check, tests, build, and audit
+        run: |
+          npm run lint
+          npx tsc --noEmit
+          npm test
+          npm run build
+          npm audit --audit-level=low
+
+      - name: Commit verified dependency repair and remove this workflow
+        run: |
+          git rm .github/workflows/one-time-dep-repair.yml
+          git add package.json package-lock.json components/LogAnalyzer.tsx
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "security: patch dependency vulnerabilities and clean lint warning"
+          git push origin HEAD:main
